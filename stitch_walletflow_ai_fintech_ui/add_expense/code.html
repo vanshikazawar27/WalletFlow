@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WalletFlow AI - Add Expense</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#031427",
+                        "outline-variant": "#3c4a42",
+                        "secondary-container": "#3f465c",
+                        "primary-fixed": "#6ffbbe",
+                        "on-primary-fixed": "#002113",
+                        "surface-bright": "#2a3a4f",
+                        "surface-variant": "#26364a",
+                        "on-secondary-fixed": "#131b2e",
+                        "background": "#031427",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#001a42",
+                        "on-primary-container": "#00422b",
+                        "on-secondary-container": "#adb4ce",
+                        "inverse-surface": "#d3e4fe",
+                        "on-tertiary-container": "#00367a",
+                        "on-surface-variant": "#bbcabf",
+                        "inverse-primary": "#006c49",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-container": "#71a1ff",
+                        "surface-container-high": "#1b2b3f",
+                        "on-primary-fixed-variant": "#005236",
+                        "surface-tint": "#4edea3",
+                        "surface": "#031427",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "on-background": "#d3e4fe",
+                        "on-tertiary": "#002e6a",
+                        "tertiary": "#adc6ff",
+                        "secondary": "#bec6e0",
+                        "primary-container": "#10b981",
+                        "outline": "#86948a",
+                        "tertiary-fixed": "#d8e2ff",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-surface": "#d3e4fe",
+                        "tertiary-fixed-dim": "#adc6ff",
+                        "surface-container-low": "#0b1c30",
+                        "primary": "#4edea3",
+                        "surface-container-highest": "#26364a",
+                        "surface-container-lowest": "#000f21",
+                        "secondary-fixed": "#dae2fd",
+                        "on-secondary": "#283044",
+                        "inverse-on-surface": "#213145",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary-fixed-variant": "#004395",
+                        "on-primary": "#003824",
+                        "surface-container": "#102034"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding-desktop": "48px",
+                        "container-padding-mobile": "16px",
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-main": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "button-text": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(78, 222, 163, 0.3);
+            border-bottom-color: #4edea3;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-pill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-main selection:bg-primary/30 selection:text-primary min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-b border-white/10 shadow-sm flex justify-between items-center px-container-padding-mobile h-16">
+<div class="flex items-center gap-3">
+<button class="active:scale-95 duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined">close</span>
+</button>
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Add Expense</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young tech-savvy financier with a clean aesthetic, wearing minimalist glasses, set against a blurred background of a modern luxury apartment with soft emerald green ambient lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgP3su7nktiw1WXGAVTfL4-1QiID7vfIWBTc85hVrhbtpYWaxDo2LK6502Po5-QLEqCOd7m-jtuz9UiZ8FuFVnlsc00YS5AC21lt260Rkzud8H0sXpH_ITlkZIikUO1p6U_S9FZPHQ8ZnORFFN0J1QbvdD3ZJI2WNUyqKlkqYejlZ4NFi28cGYGu01qBtkHc5HyeYpcSuha87hYZv6fSI_bXEZULFN3QvenC7dhG3KjUZU7U77K-qEaw"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-container-padding-mobile max-w-2xl mx-auto space-y-stack-lg">
+<!-- Amount Input Section -->
+<section class="text-center py-stack-lg relative overflow-hidden">
+
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant tracking-widest block mb-2">Total Amount</label>
+<div class="flex items-baseline justify-center gap-1">
+<span class="font-display-lg text-display-lg text-primary opacity-70">₹</span>
+<input autofocus="" class="bg-transparent border-none text-center font-display-lg text-display-lg focus:ring-0 w-full max-w-[280px] text-on-surface placeholder:text-surface-variant" type="text" value="0.00"/>
+</div>
+<div class="mt-4 flex justify-center">
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-mono text-[10px] uppercase border border-primary/20">AI Predicting Category...</span>
+</div>
+</section>
+<!-- Category Grid -->
+<section class="space-y-stack-md">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Category</h2>
+<button class="text-primary font-button-text text-button-text">View All</button>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<!-- Food -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">restaurant</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Food</span>
+</button>
+<!-- Shopping -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square border-primary/40 bg-primary/10 ring-1 ring-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase text-primary">Shopping</span>
+</button>
+<!-- Travel -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">directions_car</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Travel</span>
+</button>
+<!-- Entertainment -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">theater_comedy</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Fun</span>
+</button>
+<!-- Health -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">medical_services</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Health</span>
+</button>
+<!-- Home -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">home</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Home</span>
+</button>
+<!-- Bills -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">receipt_long</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Bills</span>
+</button>
+<!-- Others -->
+<button class="glass-card flex flex-col items-center justify-center p-4 rounded-xl aspect-square hover:bg-primary/20 transition-all active:scale-95 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center mb-2 group-hover:bg-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">more_horiz</span>
+</div>
+<span class="font-label-mono text-[10px] uppercase">Misc</span>
+</button>
+</div>
+</section>
+<!-- Form Details -->
+<section class="space-y-gutter pb-12">
+<!-- Payment Method -->
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant">Payment Method</label>
+<div class="flex gap-2">
+<button class="flex-1 glass-card py-3 rounded-xl border-primary/20 bg-primary/5 text-primary flex items-center justify-center gap-2 font-button-text">
+<span class="material-symbols-outlined text-[20px]">qr_code_2</span> UPI
+                    </button>
+<button class="flex-1 glass-card py-3 rounded-xl hover:bg-surface-variant/50 transition-colors flex items-center justify-center gap-2 font-button-text">
+<span class="material-symbols-outlined text-[20px]">credit_card</span> Card
+                    </button>
+<button class="flex-1 glass-card py-3 rounded-xl hover:bg-surface-variant/50 transition-colors flex items-center justify-center gap-2 font-button-text">
+<span class="material-symbols-outlined text-[20px]">payments</span> Cash
+                    </button>
+</div>
+</div>
+<!-- Date and Notes -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant">Date</label>
+<div class="glass-card p-4 rounded-xl flex items-center justify-between">
+<span class="font-body-main">Today, 24 Oct</span>
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+</div>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant">Merchant</label>
+<div class="glass-card p-4 rounded-xl flex items-center">
+<input class="bg-transparent border-none w-full p-0 focus:ring-0 placeholder:text-on-surface-variant/50" placeholder="E.g. Zara, Amazon..." type="text"/>
+<span class="material-symbols-outlined text-on-surface-variant">store</span>
+</div>
+</div>
+</div>
+<!-- Note Input -->
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant">Note</label>
+<div class="glass-card p-4 rounded-xl">
+<textarea class="bg-transparent border-none w-full p-0 focus:ring-0 placeholder:text-on-surface-variant/50 resize-none font-body-main" placeholder="Add a description..." rows="3"></textarea>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Area -->
+<div class="fixed bottom-0 w-full px-container-padding-mobile py-6 bg-gradient-to-t from-surface-dim via-surface-dim/95 to-transparent z-50">
+<div class="max-w-2xl mx-auto">
+<button class="w-full bg-primary text-on-primary py-5 rounded-2xl font-button-text text-lg shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform flex items-center justify-center gap-2 group">
+                Save Expense
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- AI Insight Overlay (Minimalist Toast) -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 glass-card px-4 py-2 rounded-full border-primary/30 flex items-center gap-2 animate-bounce cursor-pointer z-40" id="ai-toast">
+<span class="material-symbols-outlined text-primary text-[18px]">bolt</span>
+<span class="font-label-mono text-[10px] uppercase text-primary">AI suggests Shopping based on location</span>
+</div>
+<script>
+        // Simple micro-interactions
+        const amountInput = document.querySelector('input[type="text"]');
+        amountInput.addEventListener('focus', () => {
+            amountInput.parentElement.classList.add('scale-105', 'transition-transform');
+        });
+        amountInput.addEventListener('blur', () => {
+            amountInput.parentElement.classList.remove('scale-105');
+        });
+
+        // Hide AI toast after some time or on click
+        const aiToast = document.getElementById('ai-toast');
+        aiToast.addEventListener('click', () => {
+            aiToast.style.opacity = '0';
+            setTimeout(() => aiToast.remove(), 300);
+        });
+
+        // Currency formatting logic (Mock)
+        amountInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/[^0-9.]/g, '');
+            // Simple visual feedback only
+        });
+    </script>
+</body></html>

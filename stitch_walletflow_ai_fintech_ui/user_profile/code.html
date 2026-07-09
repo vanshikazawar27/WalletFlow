@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile - WalletFlow AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.15);
+            border: 1px solid transparent;
+            background-image: linear-gradient(rgba(3, 20, 39, 0.8), rgba(3, 20, 39, 0.8)), linear-gradient(to bottom right, #4edea3, #71a1ff);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        body {
+            background-color: #031427;
+            overflow-x: hidden;
+        }
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(78, 222, 163, 0.1) 0%, rgba(3, 20, 39, 0) 70%);
+            filter: blur(60px);
+            z-index: -1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#031427",
+                      "outline-variant": "#3c4a42",
+                      "secondary-container": "#3f465c",
+                      "primary-fixed": "#6ffbbe",
+                      "on-primary-fixed": "#002113",
+                      "surface-bright": "#2a3a4f",
+                      "surface-variant": "#26364a",
+                      "on-secondary-fixed": "#131b2e",
+                      "background": "#031427",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed": "#001a42",
+                      "on-primary-container": "#00422b",
+                      "on-secondary-container": "#adb4ce",
+                      "inverse-surface": "#d3e4fe",
+                      "on-tertiary-container": "#00367a",
+                      "on-surface-variant": "#bbcabf",
+                      "inverse-primary": "#006c49",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "tertiary-container": "#71a1ff",
+                      "surface-container-high": "#1b2b3f",
+                      "on-primary-fixed-variant": "#005236",
+                      "surface-tint": "#4edea3",
+                      "surface": "#031427",
+                      "on-error": "#690005",
+                      "error": "#ffb4ab",
+                      "on-background": "#d3e4fe",
+                      "on-tertiary": "#002e6a",
+                      "tertiary": "#adc6ff",
+                      "secondary": "#bec6e0",
+                      "primary-container": "#10b981",
+                      "outline": "#86948a",
+                      "tertiary-fixed": "#d8e2ff",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-surface": "#d3e4fe",
+                      "tertiary-fixed-dim": "#adc6ff",
+                      "surface-container-low": "#0b1c30",
+                      "primary": "#4edea3",
+                      "surface-container-highest": "#26364a",
+                      "surface-container-lowest": "#000f21",
+                      "secondary-fixed": "#dae2fd",
+                      "on-secondary": "#283044",
+                      "inverse-on-surface": "#213145",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-tertiary-fixed-variant": "#004395",
+                      "on-primary": "#003824",
+                      "surface-container": "#102034"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding-desktop": "48px",
+                      "container-padding-mobile": "16px",
+                      "stack-sm": "8px",
+                      "unit": "4px",
+                      "stack-md": "16px",
+                      "stack-lg": "32px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": ["Inter"],
+                      "card-title": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-main": ["Inter"],
+                      "label-mono": ["JetBrains Mono"],
+                      "button-text": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "card-title": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "button-text": ["14px", {"lineHeight": "20px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-main text-on-surface bg-surface-dim min-h-screen pb-32">
+<!-- Background Blobs -->
+<div class="blob top-[-100px] left-[-100px]"></div>
+<div class="blob bottom-[10%] right-[-100px]" style="background: radial-gradient(circle, rgba(113, 161, 255, 0.1) 0%, rgba(3, 20, 39, 0) 70%);"></div>
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-b border-white/10 shadow-sm flex justify-between items-center px-container-padding-mobile h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="font-display-lg text-display-lg tracking-tighter text-primary dark:text-primary-fixed">WalletFlow AI</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold">
+                V
+            </div>
+</div>
+</header>
+<main class="pt-24 px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<!-- Hero Profile Section -->
+<div class="flex flex-col md:flex-row items-center md:items-end gap-6 mb-10">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full border-4 border-primary p-1 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover rounded-full transition-transform group-hover:scale-110 duration-500" data-alt="A professional, high-end studio portrait of a confident young woman named Vanshika, styled for a modern fintech app. She has a warm expression, backlit by subtle emerald and blue cinematic lighting that reflects the WalletFlow AI brand colors. The photography is sharp, minimalist, and luxury-focused, with a shallow depth of field against a dark, tech-infused background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPkVZfRoAAqUZ4HR5qxcHPCETDwZykR2dLOcDIKsnYNcnMHcmrzy8T7YTiGsrGjtoO41Vy0tHd4VdjIs4WwRo2LgJyasfjJzCrbP6azsiARxDVi8Riih5ge_1aaQePX2cC-50o1eqH325s9ZDiZYHcxIop8NbiDOsYDaN7cO8LOHhpZ8mPbTYz0MBETQ2QJPNVBd1ICP8tDqyZwMHeMT89lqF0nalYvHKFmrr6qr6yYw4mjPcH86iqlg"/>
+</div>
+<button class="absolute bottom-1 right-1 bg-primary text-on-primary w-8 h-8 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+<div class="text-center md:text-left flex-1">
+<span class="font-label-mono text-label-mono text-primary uppercase mb-1 block">Elite Member</span>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight">Vanshika</h1>
+<p class="text-on-surface-variant mt-1">Financial Optimizer since Jan 2024</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 bg-primary text-on-primary rounded-xl font-button-text text-button-text shadow-lg active:scale-95 transition-transform hover:opacity-90">
+                    Edit Profile
+                </button>
+<button class="p-2.5 glass-card rounded-xl text-on-surface-variant hover:text-on-surface active:scale-95 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-10">
+<!-- AI Insights Summary -->
+<div class="md:col-span-8 glass-card p-stack-lg rounded-3xl ai-glow relative overflow-hidden group">
+
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Monthly Analytics</h3>
+<p class="text-on-surface-variant text-sm">Your spending is 12% lower than last month.</p>
+</div>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-mono text-[10px] uppercase border border-primary/20">AI Optimized</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Total Savings</p>
+<p class="font-headline-md text-headline-md text-on-surface">$3,420.50</p>
+<span class="text-primary text-xs flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +14.2%
+                            </span>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Efficiency Score</p>
+<p class="font-headline-md text-headline-md text-on-surface">94/100</p>
+<div class="w-full bg-white/10 h-1.5 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+</div>
+<div class="hidden md:block">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-2">Investment ROI</p>
+<p class="font-headline-md text-headline-md text-on-surface">8.4%</p>
+<span class="text-tertiary text-xs flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Top 5% users
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Savings Streak Card -->
+<div class="md:col-span-4 glass-card p-stack-lg rounded-3xl flex flex-col justify-between border-t border-white/20 bg-gradient-to-br from-white/5 to-transparent">
+<div>
+<div class="w-12 h-12 rounded-2xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-4">
+<span class="material-symbols-outlined text-[32px]">local_fire_department</span>
+</div>
+<h3 class="font-card-title text-card-title text-on-surface">Savings Streak</h3>
+<p class="text-on-surface-variant text-sm mt-1">You haven't exceeded your daily budget for 18 days!</p>
+</div>
+<div class="mt-6">
+<p class="font-display-lg text-display-lg text-on-surface mb-2">18 <span class="text-body-main font-normal text-on-surface-variant">days</span></p>
+<div class="flex gap-1.5">
+<div class="h-2 flex-1 rounded-full bg-primary"></div>
+<div class="h-2 flex-1 rounded-full bg-primary"></div>
+<div class="h-2 flex-1 rounded-full bg-primary"></div>
+<div class="h-2 flex-1 rounded-full bg-primary"></div>
+<div class="h-2 flex-1 rounded-full bg-white/10"></div>
+<div class="h-2 flex-1 rounded-full bg-white/10"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 text-right">3 days to next milestone</p>
+</div>
+</div>
+</div>
+<!-- Badges & Achievements Section -->
+<section>
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Unlocked Badges</h2>
+<button class="text-primary font-button-text text-button-text flex items-center gap-1 hover:underline">
+                    View Gallery <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-stack-md">
+<!-- Badge 1 -->
+<div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center group cursor-pointer hover:bg-white/10 transition-all active:scale-95">
+<div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 border border-primary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px] text-primary" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<p class="font-button-text text-button-text text-on-surface">Early Bird</p>
+<p class="text-[10px] uppercase font-label-mono text-on-surface-variant mt-1">Tier 1</p>
+</div>
+<!-- Badge 2 -->
+<div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center group cursor-pointer hover:bg-white/10 transition-all active:scale-95">
+<div class="w-16 h-16 rounded-full bg-tertiary/20 flex items-center justify-center mb-4 border border-tertiary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px] text-tertiary" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<p class="font-button-text text-button-text text-on-surface">High Roller</p>
+<p class="text-[10px] uppercase font-label-mono text-on-surface-variant mt-1">Tier 3</p>
+</div>
+<!-- Badge 3 -->
+<div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center group cursor-pointer hover:bg-white/10 transition-all active:scale-95">
+<div class="w-16 h-16 rounded-full bg-on-secondary-container/20 flex items-center justify-center mb-4 border border-on-secondary-container/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px] text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</div>
+<p class="font-button-text text-button-text text-on-surface">Safety First</p>
+<p class="text-[10px] uppercase font-label-mono text-on-surface-variant mt-1">Tier 2</p>
+</div>
+<!-- Locked Badge -->
+<div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center opacity-40 grayscale group hover:opacity-60 transition-all">
+<div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant">lock</span>
+</div>
+<p class="font-button-text text-button-text text-on-surface-variant">Wealth Master</p>
+<p class="text-[10px] uppercase font-label-mono text-on-surface-variant mt-1">Locked</p>
+</div>
+</div>
+</section>
+<!-- Goals & Targets -->
+<section class="mt-12">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6">Financial Goals</h2>
+<div class="space-y-4">
+<div class="glass-card p-stack-md rounded-2xl flex flex-col md:flex-row items-start md:items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-bright flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">beach_access</span>
+</div>
+<div class="flex-1 w-full">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-card-title text-card-title">Summer Vacation Fund</h4>
+<span class="text-on-surface font-button-text">$4,200 / $6,000</span>
+</div>
+<div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 70%"></div>
+</div>
+</div>
+</div>
+<div class="glass-card p-stack-md rounded-2xl flex flex-col md:flex-row items-start md:items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-bright flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">directions_car</span>
+</div>
+<div class="flex-1 w-full">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-card-title text-card-title">Tesla Model 3 Downpayment</h4>
+<span class="text-on-surface font-button-text">$12,500 / $15,000</span>
+</div>
+<div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 83%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container/90 dark:bg-surface-container-low/90 backdrop-blur-xl border-t border-white/10 shadow-lg flex justify-around items-center h-20 px-2 w-full rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-mono text-label-mono uppercase">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-mono text-label-mono uppercase">History</span>
+</a>
+<button class="bg-primary text-on-primary w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform -translate-y-4">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-mono text-label-mono uppercase">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-primary/10 rounded-xl px-3 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-mono text-label-mono uppercase">Settings</span>
+</a>
+</nav>
+<!-- Desktop Floating Menu Logic -->
+<script>
+        // Micro-interactions and subtle hover effects
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

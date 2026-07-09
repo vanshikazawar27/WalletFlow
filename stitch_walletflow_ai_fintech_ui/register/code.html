@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register | WalletFlow AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+        .input-glow:focus-within {
+            border-bottom: 2px solid #10b981;
+        }
+        .bg-mesh {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(173, 198, 255, 0.15) 0px, transparent 50%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#031427",
+                      "outline-variant": "#3c4a42",
+                      "secondary-container": "#3f465c",
+                      "primary-fixed": "#6ffbbe",
+                      "on-primary-fixed": "#002113",
+                      "surface-bright": "#2a3a4f",
+                      "surface-variant": "#26364a",
+                      "on-secondary-fixed": "#131b2e",
+                      "background": "#031427",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed": "#001a42",
+                      "on-primary-container": "#00422b",
+                      "on-secondary-container": "#adb4ce",
+                      "inverse-surface": "#d3e4fe",
+                      "on-tertiary-container": "#00367a",
+                      "on-surface-variant": "#bbcabf",
+                      "inverse-primary": "#006c49",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "tertiary-container": "#71a1ff",
+                      "surface-container-high": "#1b2b3f",
+                      "on-primary-fixed-variant": "#005236",
+                      "surface-tint": "#4edea3",
+                      "surface": "#031427",
+                      "on-error": "#690005",
+                      "error": "#ffb4ab",
+                      "on-background": "#d3e4fe",
+                      "on-tertiary": "#002e6a",
+                      "tertiary": "#adc6ff",
+                      "secondary": "#bec6e0",
+                      "primary-container": "#10b981",
+                      "outline": "#86948a",
+                      "tertiary-fixed": "#d8e2ff",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-surface": "#d3e4fe",
+                      "tertiary-fixed-dim": "#adc6ff",
+                      "surface-container-low": "#0b1c30",
+                      "primary": "#4edea3",
+                      "surface-container-highest": "#26364a",
+                      "surface-container-lowest": "#000f21",
+                      "secondary-fixed": "#dae2fd",
+                      "on-secondary": "#283044",
+                      "inverse-on-surface": "#213145",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-tertiary-fixed-variant": "#004395",
+                      "on-primary": "#003824",
+                      "surface-container": "#102034"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding-desktop": "48px",
+                      "container-padding-mobile": "16px",
+                      "stack-sm": "8px",
+                      "unit": "4px",
+                      "stack-md": "16px",
+                      "stack-lg": "32px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": ["Inter"],
+                      "card-title": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-main": ["Inter"],
+                      "label-mono": ["JetBrains Mono"],
+                      "button-text": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "card-title": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "button-text": ["14px", {"lineHeight": "20px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-mesh min-h-screen flex items-center justify-center p-container-padding-mobile md:p-container-padding-desktop">
+<div class="w-full max-w-[1200px] grid md:grid-cols-12 gap-gutter items-center">
+<!-- Branding & Value Prop (Left Column - Desktop) -->
+<div class="hidden md:flex md:col-span-6 flex-col space-y-stack-lg pr-stack-lg">
+<div class="flex items-center gap-stack-sm mb-stack-md">
+<span class="material-symbols-outlined text-primary-container text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<h1 class="font-display-lg text-display-lg tracking-tighter text-on-secondary-fixed">WalletFlow AI</h1>
+</div>
+<h2 class="font-headline-md text-headline-md text-slate-700 leading-tight">
+                Experience the next generation of <span class="text-primary-container">intelligent finance</span> management.
+            </h2>
+<div class="space-y-stack-md">
+<div class="flex items-start gap-stack-md">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary-container">insights</span>
+</div>
+<div>
+<p class="font-card-title text-card-title text-slate-800">AI-Powered Insights</p>
+<p class="font-body-main text-body-main text-slate-500">Real-time spending analysis and predictive budgeting.</p>
+</div>
+</div>
+<div class="flex items-start gap-stack-md">
+<div class="bg-tertiary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-tertiary-container">shield</span>
+</div>
+<div>
+<p class="font-card-title text-card-title text-slate-800">Bank-Grade Security</p>
+<p class="font-body-main text-body-main text-slate-500">Your data is encrypted with the highest industry standards.</p>
+</div>
+</div>
+</div>
+<div class="relative w-full h-48 rounded-2xl overflow-hidden mt-stack-lg glass-card p-2">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+<div class="relative h-full w-full rounded-xl overflow-hidden" data-alt="A futuristic, clean visualization of financial data flow using glowing emerald and soft blue lines on a white background. Minimalist 3D elements like floating coins and translucent cards are arranged in a balanced composition, embodying a high-end fintech and AI aesthetic with a sense of calm efficiency and sophisticated technology." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAw73eNjqIwqkToaCCnapVZeo1wrqvXU6oRXN2KQCNqqchidbZaKo45zS4l6QYOlDpwovJtiMVOchrb9Iln6LHWspXEx8qcsEHsdfDyjfAsdBnM98tQtI6dHwTZYITk_hd4__zutfxiDASMt6Nk-G4Upvu53YrcKvFLFIKCQhu3vS2YZfGCecDCMRtzdmY7vhjT9OTKj6ZluajSdxw5-VBzA8fwZhAVIyWspBHwFkImZ4Rp8kj2MX8jzQ')"></div>
+</div>
+</div>
+<!-- Registration Form (Right Column) -->
+<div class="md:col-span-6 flex flex-col justify-center">
+<div class="glass-card rounded-[2rem] p-8 md:p-12 w-full max-w-md mx-auto relative overflow-hidden">
+<!-- AI Accent Glow -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 blur-3xl -mr-16 -mt-16"></div>
+<header class="mb-stack-lg relative z-10">
+<div class="md:hidden flex items-center gap-stack-sm mb-stack-sm">
+<span class="material-symbols-outlined text-primary-container text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-on-secondary-fixed">WalletFlow AI</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-slate-900">Create Account</h3>
+<p class="font-body-main text-body-main text-slate-500 mt-1">Join the future of financial flow.</p>
+</header>
+<form class="space-y-stack-md relative z-10" onsubmit="return false;">
+<!-- Name Input -->
+<div class="group">
+<label class="font-label-mono text-label-mono text-slate-400 block mb-1">FULL NAME</label>
+<div class="input-glow flex items-center bg-white/50 border-b border-slate-200 transition-all duration-300">
+<span class="material-symbols-outlined text-slate-400 pl-2">person</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-main text-body-main py-3 px-3 text-slate-800 placeholder:text-slate-300" placeholder="John Doe" type="text"/>
+</div>
+</div>
+<!-- Email Input -->
+<div class="group">
+<label class="font-label-mono text-label-mono text-slate-400 block mb-1">EMAIL ADDRESS</label>
+<div class="input-glow flex items-center bg-white/50 border-b border-slate-200 transition-all duration-300">
+<span class="material-symbols-outlined text-slate-400 pl-2">mail</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-main text-body-main py-3 px-3 text-slate-800 placeholder:text-slate-300" placeholder="john@example.com" type="email"/>
+</div>
+</div>
+<!-- Password Grid -->
+<div class="grid grid-cols-1 gap-stack-md">
+<!-- Password -->
+<div class="group">
+<label class="font-label-mono text-label-mono text-slate-400 block mb-1">PASSWORD</label>
+<div class="input-glow flex items-center bg-white/50 border-b border-slate-200 transition-all duration-300">
+<span class="material-symbols-outlined text-slate-400 pl-2">lock</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-main text-body-main py-3 px-3 text-slate-800 placeholder:text-slate-300" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Confirm Password -->
+<div class="group">
+<label class="font-label-mono text-label-mono text-slate-400 block mb-1">CONFIRM PASSWORD</label>
+<div class="input-glow flex items-center bg-white/50 border-b border-slate-200 transition-all duration-300">
+<span class="material-symbols-outlined text-slate-400 pl-2">verified_user</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-main text-body-main py-3 px-3 text-slate-800 placeholder:text-slate-300" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Terms -->
+<div class="flex items-center gap-stack-sm pt-2">
+<input class="w-4 h-4 rounded border-slate-300 text-primary-container focus:ring-primary-container/20 transition-all" id="terms" type="checkbox"/>
+<label class="font-body-main text-[13px] text-slate-500" for="terms">
+                            I agree to the <a class="text-primary-container hover:underline font-medium" href="#">Terms of Service</a> and <a class="text-primary-container hover:underline font-medium" href="#">Privacy Policy</a>.
+                        </label>
+</div>
+<!-- CTA Button -->
+<button class="w-full bg-primary-container hover:bg-[#0ea271] active:scale-[0.98] transition-all duration-200 py-4 px-6 rounded-xl shadow-lg shadow-primary-container/20 flex items-center justify-center gap-2 mt-stack-lg group">
+<span class="font-button-text text-button-text text-white uppercase tracking-wider">Create Account</span>
+<span class="material-symbols-outlined text-white transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+<!-- Back to Login -->
+<div class="pt-stack-md text-center">
+<p class="font-body-main text-body-main text-slate-500">
+                            Already have an account? 
+                            <a class="text-primary-container font-semibold hover:underline ml-1" href="#">Login</a>
+</p>
+</div>
+</form>
+<!-- Social Proof / Footer -->
+<div class="mt-10 pt-8 border-t border-slate-100 flex justify-center gap-stack-lg">
+<button class="p-3 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center bg-white">
+<svg class="w-5 h-5" viewbox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path></svg>
+</button>
+<button class="p-3 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center bg-white">
+<svg class="w-5 h-5" viewbox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C4.33 16.92 4.02 10.36 7.42 8.4c1.23-.7 2.5-.54 3.3.06 1.05.54 1.83.56 3.12 0 .93-.43 2.1-.64 3.3.16 1.35.75 2.22 1.95 2.5 2.95-2.8 1.17-2.3 5.42.56 5.42 1.38 0 2.23-1.5 3.12-3.11.4-.73.68-1.32.73-1.6zm-4.72-13.8c-.14-2.66 2.22-4.94 4.54-4.82.35 2.87-2.48 5.25-4.54 4.82z" fill="#000000"></path></svg>
+</button>
+<button class="p-3 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center bg-white">
+<svg class="w-5 h-5" viewbox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" fill="#0077B5"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Atmospheric Blob Backgrounds -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40">
+<div class="absolute top-[10%] left-[5%] w-[400px] h-[400px] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
+<div class="absolute bottom-[10%] right-[10%] w-[500px] h-[500px] bg-tertiary/15 rounded-full blur-[150px] animate-bounce" style="animation-duration: 10s;"></div>
+</div>
+<script>
+        // Simple micro-interactions for input focus effects
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('border-primary-container');
+                input.parentElement.classList.remove('border-slate-200');
+            });
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    input.parentElement.classList.remove('border-primary-container');
+                    input.parentElement.classList.add('border-slate-200');
+                }
+            });
+        });
+
+        // Form submission animation placeholder
+        document.querySelector('button').addEventListener('click', function(e) {
+            const btn = e.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> <span class="font-button-text text-button-text uppercase tracking-wider">Verifying...</span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> <span class="font-button-text text-button-text uppercase tracking-wider">Success</span>';
+                btn.classList.replace('bg-primary-container', 'bg-emerald-600');
+            }, 1500);
+        });
+    </script>
+</body></html>

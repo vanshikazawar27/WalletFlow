@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WalletFlow AI - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#031427",
+                    "outline-variant": "#3c4a42",
+                    "secondary-container": "#3f465c",
+                    "primary-fixed": "#6ffbbe",
+                    "on-primary-fixed": "#002113",
+                    "surface-bright": "#2a3a4f",
+                    "surface-variant": "#26364a",
+                    "on-secondary-fixed": "#131b2e",
+                    "background": "#031427",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed": "#001a42",
+                    "on-primary-container": "#00422b",
+                    "on-secondary-container": "#adb4ce",
+                    "inverse-surface": "#d3e4fe",
+                    "on-tertiary-container": "#00367a",
+                    "on-surface-variant": "#bbcabf",
+                    "inverse-primary": "#006c49",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "tertiary-container": "#71a1ff",
+                    "surface-container-high": "#1b2b3f",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-tint": "#4edea3",
+                    "surface": "#031427",
+                    "on-error": "#690005",
+                    "error": "#ffb4ab",
+                    "on-background": "#d3e4fe",
+                    "on-tertiary": "#002e6a",
+                    "tertiary": "#adc6ff",
+                    "secondary": "#bec6e0",
+                    "primary-container": "#10b981",
+                    "outline": "#86948a",
+                    "tertiary-fixed": "#d8e2ff",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-surface": "#d3e4fe",
+                    "tertiary-fixed-dim": "#adc6ff",
+                    "surface-container-low": "#0b1c30",
+                    "primary": "#4edea3",
+                    "surface-container": "#102034"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding-desktop": "48px",
+                    "container-padding-mobile": "16px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Inter"],
+                    "card-title": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-main": ["Inter"],
+                    "label-mono": ["JetBrains Mono"],
+                    "button-text": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "card-title": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-main": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "button-text": ["14px", {"lineHeight": "20px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(78, 222, 163, 0.3), transparent);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-glow-blob {
+            position: fixed;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.15;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-main selection:bg-primary selection:text-on-primary-fixed">
+<!-- Background Blobs -->
+<div class="bg-glow-blob bg-primary w-96 h-96 -top-20 -left-20"></div>
+<div class="bg-glow-blob bg-tertiary w-[500px] h-[500px] -bottom-32 -right-32"></div>
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-b border-white/10 shadow-sm flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop h-16">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution headshot of a young South Asian woman with a friendly smile, Vanshika, for a premium fintech profile avatar. The lighting is soft and studio-quality against a clean, minimalist blue-toned background, perfectly aligning with the WalletFlow AI dark mode aesthetic and precision elegance brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8mmpgWehEDxdI7N4IlY4jxN3WpVq29QV7GAAJKNTBUPAE3ivSL37cwV1FBde2H64EpxQ4mJHMC2TupidSV7dhisPMPiWVpN1kq4HXfCDRzAsovs46mIlcUhoOnp-9YzWVn8FXefvWS8iPN2cLtRfzJqtOqwdxOx1EbMnw-kagmVSz9nxl-rLXjuq24pC8jV71CoXYxTzSZ0xAqdnGv9Q-S_0lC7rvu7FCKfii0DXM9cDXvfTB2iuoig"/>
+</div>
+<div class="hidden md:block">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Good Morning</p>
+<p class="font-headline-md text-headline-md text-primary leading-none">Vanshika 👋</p>
+</div>
+</div>
+<div class="font-display-lg text-display-lg tracking-tighter text-primary dark:text-primary-fixed">
+            WalletFlow AI
+        </div>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:opacity-80 transition-opacity active:scale-95 duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto space-y-stack-lg">
+<!-- Mobile Greeting (Hidden on Desktop) -->
+<div class="md:hidden">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Good Morning</p>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Vanshika 👋</h1>
+</div>
+<!-- Bento Grid Section -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Hero Balance Card -->
+<div class="md:col-span-8 glass-card p-stack-lg rounded-3xl flex flex-col justify-between min-h-[240px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Total Balance</p>
+<h2 class="text-[40px] md:text-[56px] font-bold text-white tracking-tight mt-1">₹58,250<span class="text-primary text-2xl">.00</span></h2>
+</div>
+<div class="bg-primary/10 px-3 py-1 rounded-full border border-primary/20 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-mono text-label-mono text-primary uppercase">AI Optimizing</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-stack-md mt-stack-lg">
+<div class="space-y-1">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Income</p>
+<p class="text-primary font-semibold text-lg">₹84,000</p>
+</div>
+<div class="space-y-1">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Expenses</p>
+<p class="text-error font-semibold text-lg">₹25,750</p>
+</div>
+<div class="space-y-1">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Savings</p>
+<p class="text-tertiary font-semibold text-lg">₹58,250</p>
+</div>
+</div>
+</div>
+<!-- AI Insight / Budget Progress -->
+<div class="md:col-span-4 glass-card p-stack-lg rounded-3xl flex flex-col items-center justify-center text-center space-y-stack-md border-primary/20 border">
+<div class="relative w-32 h-32">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="109.3" stroke-linecap="round" stroke-width="10"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-white">70%</span>
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Budget</span>
+</div>
+</div>
+<div>
+<p class="font-card-title text-card-title text-white">Monthly Goal</p>
+<p class="font-body-main text-on-surface-variant text-sm mt-1">₹18,250 remaining for your "New Laptop" goal.</p>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-stack-md">
+<button class="group flex items-center justify-center gap-3 p-5 glass-card rounded-2xl hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-button-text text-button-text text-white">Add Income</span>
+</button>
+<button class="group flex items-center justify-center gap-3 p-5 glass-card rounded-2xl hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">remove_circle</span>
+<span class="font-button-text text-button-text text-white">Add Expense</span>
+</button>
+<button class="group flex items-center justify-center gap-3 p-5 glass-card rounded-2xl hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">send</span>
+<span class="font-button-text text-button-text text-white">Transfer</span>
+</button>
+<button class="group flex items-center justify-center gap-3 p-5 glass-card rounded-2xl hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">qr_code_scanner</span>
+<span class="font-button-text text-button-text text-white">Scan</span>
+</button>
+</div>
+<!-- Transactions List -->
+<div class="md:col-span-12 space-y-stack-md">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">Recent Transactions</h3>
+<button class="text-primary font-label-mono text-label-mono uppercase hover:underline">View All</button>
+</div>
+<div class="glass-card rounded-3xl divide-y divide-white/5">
+<!-- Transaction Item -->
+<div class="flex items-center justify-between p-stack-md hover:bg-white/5 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shopping_bag</span>
+</div>
+<div>
+<p class="font-card-title text-card-title text-white group-hover:text-primary transition-colors">Apple Store</p>
+<p class="text-sm text-on-surface-variant">Electronics • Today, 10:45 AM</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-white">-₹12,499</p>
+<p class="text-[10px] font-label-mono text-primary uppercase">Cashback Pending</p>
+</div>
+</div>
+<!-- Transaction Item -->
+<div class="flex items-center justify-between p-stack-md hover:bg-white/5 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-surface-variant flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div>
+<p class="font-card-title text-card-title text-white group-hover:text-tertiary transition-colors">Blue Tokai Coffee</p>
+<p class="text-sm text-on-surface-variant">Dining • Yesterday, 4:20 PM</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-white">-₹450</p>
+</div>
+</div>
+<!-- Transaction Item (AI Flagged) -->
+<div class="flex items-center justify-between p-stack-md hover:bg-white/5 transition-colors cursor-pointer group relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary rounded-r-full"></div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<p class="font-card-title text-card-title text-white group-hover:text-primary transition-colors">Salary Credit</p>
+<p class="text-sm text-on-surface-variant">Income • 2 days ago</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">+₹84,000</p>
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase">Recurring AI Tracked</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-16 h-16 bg-primary text-on-primary-fixed rounded-full shadow-[0_0_30px_rgba(78,222,163,0.3)] flex items-center justify-center z-50 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container/90 dark:bg-surface-container-low/90 backdrop-blur-xl border-t border-white/10 rounded-t-xl flex justify-around items-center h-20 px-2 shadow-lg">
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-primary/10 rounded-xl px-3 py-1 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-mono text-label-mono uppercase mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors px-3 py-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-mono text-label-mono uppercase mt-1">History</span>
+</a>
+<div class="w-10"></div> <!-- Spacer for FAB context, though FAB is above -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors px-3 py-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-mono text-label-mono uppercase mt-1">Insights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors px-3 py-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-mono text-label-mono uppercase mt-1">Settings</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and atmospheric hover effects
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>
