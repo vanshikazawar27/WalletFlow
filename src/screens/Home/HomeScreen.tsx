@@ -5,7 +5,16 @@ import { useTheme } from '../../theme/ThemeProvider';
 import { BalanceCard } from '../../components/dashboard/BalanceCard';
 import { SummaryCard } from '../../components/dashboard/SummaryCard';
 import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
+import { TransactionItem, Transaction } from '../../components/dashboard/TransactionItem';
 import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
+
+const DUMMY_TRANSACTIONS: Transaction[] = [
+  { id: '1', title: 'Groceries (Whole Foods)', amount: 124.50, date: 'Today', category: 'Food', type: 'expense', iconName: 'cart-outline' },
+  { id: '2', title: 'Freelance Design', amount: 850.00, date: 'Yesterday', category: 'Income', type: 'income', iconName: 'cash-outline' },
+  { id: '3', title: 'Netflix Subscription', amount: 15.99, date: 'Mar 15', category: 'Entertainment', type: 'expense', iconName: 'film-outline' },
+  { id: '4', title: 'Uber Ride', amount: 24.30, date: 'Mar 12', category: 'Transport', type: 'expense', iconName: 'car-outline' },
+];
 
 export const HomeScreen = () => {
   const { colors } = useTheme();
@@ -57,6 +66,21 @@ export const HomeScreen = () => {
         {/* Budget Section */}
         <BudgetProgress totalBudget={3000} spentAmount={1250.25} />
         
+        {/* Recent Transactions Header */}
+        <View style={styles.sectionHeader}>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Recent Transactions</Text>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Text style={[styles.seeAllText, { color: colors.primary }]}>See All</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Transactions List */}
+        <View style={styles.transactionsList}>
+          {DUMMY_TRANSACTIONS.map(tx => (
+            <TransactionItem key={tx.id} transaction={tx} />
+          ))}
+        </View>
+        
         {/* Temporary Spacer for Bottom Nav */}
         <View style={{ height: 100 }} />
       </ScrollView>
@@ -97,5 +121,23 @@ const styles = StyleSheet.create({
   },
   spacer: {
     width: 16,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  seeAllText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  transactionsList: {
+    marginTop: 8,
   },
 });
