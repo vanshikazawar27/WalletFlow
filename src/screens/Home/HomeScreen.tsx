@@ -4,6 +4,7 @@ import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeProvider';
 import { BalanceCard } from '../../components/dashboard/BalanceCard';
 import { SummaryCard } from '../../components/dashboard/SummaryCard';
+import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
 import { Ionicons } from '@expo/vector-icons';
 
 export const HomeScreen = () => {
@@ -52,6 +53,9 @@ export const HomeScreen = () => {
           <View style={styles.spacer} />
           <SummaryCard type="expense" amount={1250.25} />
         </View>
+
+        {/* Budget Section */}
+        <BudgetProgress totalBudget={3000} spentAmount={1250.25} />
         
         {/* Temporary Spacer for Bottom Nav */}
         <View style={{ height: 100 }} />
