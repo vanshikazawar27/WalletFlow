@@ -8,6 +8,7 @@ import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
 import { TransactionItem, Transaction } from '../../components/dashboard/TransactionItem';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const DUMMY_TRANSACTIONS: Transaction[] = [
   { id: '1', title: 'Groceries (Whole Foods)', amount: 124.50, date: 'Today', category: 'Food', type: 'expense', iconName: 'cart-outline' },
@@ -43,7 +44,7 @@ export const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* Header Section */}
-        <View style={styles.header}>
+        <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.header}>
           <View>
             <Text style={[styles.greeting, { color: colors.textSecondary }]}>{greeting},</Text>
             <Text style={[styles.date, { color: colors.textPrimary }]}>{currentDate}</Text>
@@ -51,33 +52,39 @@ export const HomeScreen = () => {
           <View style={[styles.profileAvatar, { backgroundColor: colors.card }]}>
             <Ionicons name="person-circle-outline" size={32} color={colors.primary} />
           </View>
-        </View>
+        </Animated.View>
 
         {/* Balance Section */}
-        <BalanceCard balance={12450.75} />
+        <Animated.View entering={FadeInDown.duration(400).delay(200)}>
+          <BalanceCard balance={12450.75} />
+        </Animated.View>
 
         {/* Summary Row */}
-        <View style={styles.summaryRow}>
+        <Animated.View entering={FadeInDown.duration(400).delay(300)} style={styles.summaryRow}>
           <SummaryCard type="income" amount={4500.00} />
           <View style={styles.spacer} />
           <SummaryCard type="expense" amount={1250.25} />
-        </View>
+        </Animated.View>
 
         {/* Budget Section */}
-        <BudgetProgress totalBudget={3000} spentAmount={1250.25} />
+        <Animated.View entering={FadeInDown.duration(400).delay(400)}>
+          <BudgetProgress totalBudget={3000} spentAmount={1250.25} />
+        </Animated.View>
         
         {/* Recent Transactions Header */}
-        <View style={styles.sectionHeader}>
+        <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Recent Transactions</Text>
           <TouchableOpacity activeOpacity={0.7}>
             <Text style={[styles.seeAllText, { color: colors.primary }]}>See All</Text>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
 
         {/* Transactions List */}
         <View style={styles.transactionsList}>
-          {DUMMY_TRANSACTIONS.map(tx => (
-            <TransactionItem key={tx.id} transaction={tx} />
+          {DUMMY_TRANSACTIONS.map((tx, index) => (
+            <Animated.View key={tx.id} entering={FadeInDown.duration(400).delay(600 + (index * 100))}>
+              <TransactionItem transaction={tx} />
+            </Animated.View>
           ))}
         </View>
         
