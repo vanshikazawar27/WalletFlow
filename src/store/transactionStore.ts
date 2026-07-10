@@ -1,18 +1,35 @@
 import { create } from 'zustand';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Transaction, CreateTransactionPayload } from '../types/transaction';
 
 interface TransactionState {
   transactions: Transaction[];
-  addTransaction: (payload: CreateTransactionPayload) => void;
-  updateTransaction: (id: string, payload: Partial<CreateTransactionPayload>) => void;
-  deleteTransaction: (id: string) => void;
+  isLoading: boolean;
+  error: string | null;
+  addTransaction: (payload: CreateTransactionPayload) => Promise<void>;
+  updateTransaction: (id: string, payload: Partial<CreateTransactionPayload>) => Promise<void>;
+  deleteTransaction: (id: string) => Promise<void>;
   getTransactionById: (id: string) => Transaction | undefined;
+  loadTransactions: () => Promise<void>;
 }
 
 export const useTransactionStore = create<TransactionState>((set, get) => ({
   transactions: [],
+  isLoading: false,
+  error: null,
 
-  addTransaction: (payload) => {
+  loadTransactions: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const stored = await AsyncStorage.getItem('transactions');
+      const parsed = stored ? JSON.parse(stored) : [];
+      set({ transactions: parsed, isLoading: false });
+    } catch (e) {
+      set({ error: (e as Error).message, isLoading: false });
+    }
+  },
+
+  addTransaction: async (payload) => {
     const now = new Date().toISOString();
     const newTransaction: Transaction = {
       ...payload,
@@ -21,9 +38,10 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       updatedAt: now,
     };
     set(state => ({ transactions: [newTransaction, ...state.transactions] }));
+    await AsyncStorage.setItem('transactions', JSON.stringify(get().transactions));
   },
 
-  updateTransaction: (id, payload) => {
+  updateTransaction: async (id, payload) => {
     set(state => ({
       transactions: state.transactions.map(txn =>
         txn.id === id
@@ -31,12 +49,14 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
           : txn,
       ),
     }));
+    await AsyncStorage.setItem('transactions', JSON.stringify(get().transactions));
   },
 
-  deleteTransaction: (id) => {
+  deleteTransaction: async (id) => {
     set(state => ({
       transactions: state.transactions.filter(txn => txn.id !== id),
     }));
+    await AsyncStorage.setItem('transactions', JSON.stringify(get().transactions));
   },
 
   getTransactionById: (id) => {
