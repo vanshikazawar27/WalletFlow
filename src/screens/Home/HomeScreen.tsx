@@ -5,20 +5,23 @@ import { useTheme } from '../../theme/ThemeProvider';
 import { BalanceCard } from '../../components/dashboard/BalanceCard';
 import { SummaryCard } from '../../components/dashboard/SummaryCard';
 import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
-import { TransactionItem, Transaction } from '../../components/dashboard/TransactionItem';
+import { TransactionItem } from '../../components/dashboard/TransactionItem';
+import { Transaction } from '../../types/transaction';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 const DUMMY_TRANSACTIONS: Transaction[] = [
-  { id: '1', title: 'Groceries (Whole Foods)', amount: 124.50, date: 'Today', category: 'Food', type: 'expense', iconName: 'cart-outline' },
-  { id: '2', title: 'Freelance Design', amount: 850.00, date: 'Yesterday', category: 'Income', type: 'income', iconName: 'cash-outline' },
-  { id: '3', title: 'Netflix Subscription', amount: 15.99, date: 'Mar 15', category: 'Entertainment', type: 'expense', iconName: 'film-outline' },
-  { id: '4', title: 'Uber Ride', amount: 24.30, date: 'Mar 12', category: 'Transport', type: 'expense', iconName: 'car-outline' },
+  { id: '1', title: 'Groceries (Whole Foods)', amount: 124.50, date: 'Today', category: 'Food', type: 'expense', iconName: 'cart-outline', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { id: '2', title: 'Freelance Design', amount: 850.00, date: 'Yesterday', category: 'Income', type: 'income', iconName: 'cash-outline', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { id: '3', title: 'Netflix Subscription', amount: 15.99, date: 'Mar 15', category: 'Entertainment', type: 'expense', iconName: 'film-outline', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+  { id: '4', title: 'Uber Ride', amount: 24.30, date: 'Mar 12', category: 'Transport', type: 'expense', iconName: 'car-outline', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
 ];
 
 export const HomeScreen = () => {
   const { colors } = useTheme();
+  const navigation = useNavigation();
 
   // Dynamic greeting based on time of day
   const greeting = useMemo(() => {
@@ -83,7 +86,10 @@ export const HomeScreen = () => {
         <View style={styles.transactionsList}>
           {DUMMY_TRANSACTIONS.map((tx, index) => (
             <Animated.View key={tx.id} entering={FadeInDown.duration(400).delay(600 + (index * 100))}>
-              <TransactionItem transaction={tx} />
+              <TransactionItem 
+                transaction={tx} 
+                onPress={(transaction) => navigation.navigate('EditTransaction' as never, { id: transaction.id } as never)} 
+              />
             </Animated.View>
           ))}
         </View>

@@ -3,22 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../theme/ThemeProvider';
 import { Card } from '../common/Card';
-
-export interface Transaction {
-  id: string;
-  title: string;
-  amount: number;
-  date: string;
-  category: string;
-  type: 'income' | 'expense';
-  iconName: keyof typeof Ionicons.glyphMap;
-}
+import { Transaction } from '../../types/transaction';
+import { useTransactionStore } from '../../store/transactionStore';
+import { TouchableOpacity } from 'react-native';
 
 interface TransactionItemProps {
   transaction: Transaction;
+  onPress?: (transaction: Transaction) => void;
 }
 
-export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
+export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, onPress }) => {
   const { colors } = useTheme();
   
   const isIncome = transaction.type === 'income';
@@ -26,32 +20,41 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction })
   const amountPrefix = isIncome ? '+' : '-';
 
   return (
-    <Card style={styles.card}>
-      <View style={styles.container}>
-        <View style={styles.leftSection}>
-          <View style={[styles.iconContainer, { backgroundColor: colors.background }]}>
-            <Ionicons name={transaction.iconName} size={24} color={colors.primary} />
+    <TouchableOpacity onPress={() => onPress?.(transaction)} activeOpacity={0.8}>
+      <Card style={styles.card}>
+        <View style={styles.container}>
+          <View style={styles.leftSection}>
+            <View style={[styles.iconContainer, { backgroundColor: colors.background }]}>
+              <Ionicons name={transaction.iconName} size={24} color={colors.primary} />
+            </View>
+            <View style={styles.details}>
+              <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={1}>
+                {transaction.title}
+              </Text>
+              <Text style={[styles.category, { color: colors.textSecondary }]}>
+                {transaction.category}
+              </Text>
+            </View>
           </View>
-          <View style={styles.details}>
-            <Text style={[styles.title, { color: colors.textPrimary }]} numberOfLines={1}>
-              {transaction.title}
-            </Text>
-            <Text style={[styles.category, { color: colors.textSecondary }]}>
-              {transaction.category}
-            </Text>
-          </View>
-        </View>
 
-        <View style={styles.rightSection}>
-          <Text style={[styles.amount, { color: amountColor }]}>
-            {amountPrefix}${Math.abs(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-          </Text>
-          <Text style={[styles.date, { color: colors.textSecondary }]}>
-            {transaction.date}
-          </Text>
+          <View style={styles.rightSection}>
+            <Text style={[styles.amount, { color: amountColor }]}>
+              {amountPrefix}${Math.abs(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </Text>
+            <Text style={[styles.date, { color: colors.textSecondary }]}>
+              {transaction.date}
+            </Text>
+            {/* Delete button */}
+            <TouchableOpacity onPress={() => {
+              const deleteTransaction = useTransactionStore.getState().deleteTransaction;
+              deleteTransaction(transaction.id);
+            }} style={styles.deleteButton} activeOpacity={0.7}>
+              <Ionicons name="trash" size={20} color={colors.error || '#FF3B30'} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Card>
+      </Card>
+    </TouchableOpacity>
   );
 };
 

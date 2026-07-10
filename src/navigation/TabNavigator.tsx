@@ -83,10 +83,10 @@ export const TabNavigator = () => {
       
       {/* Floating Action Button (Center) */}
       <Tab.Screen
-        name="AddTransaction"
-        component={HomeScreen} // Placeholder, should open modal
+        name="AddPlaceholder"
+        component={HomeScreen}
         options={{
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: () => (
             <Ionicons name="add" size={32} color="#FFFFFF" />
           ),
           tabBarButton: (props) => (
@@ -96,8 +96,7 @@ export const TabNavigator = () => {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            // TODO: Open Add Transaction Modal
-            console.log("Add transaction pressed");
+            navigation.navigate('AddTransaction');
           },
         })}
       />
