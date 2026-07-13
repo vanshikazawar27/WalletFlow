@@ -20,9 +20,10 @@ import { useTransactionStore } from '../../store/transactionStore';
 import {
   DEFAULT_CATEGORIES,
   getCategoryIcon,
-  Category,
+  Category as TransactionCategory,
 } from '../../types/transaction';
 import { TransactionFormData, transactionSchema } from '../../types/schemas';
+import { useCategoryStore } from '../../store/categoryStore';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 interface AddTransactionScreenProps {
@@ -35,9 +36,10 @@ export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navi
   const addTransaction = useTransactionStore(state => state.addTransaction);
   const [selectedType, setSelectedType] = useState<'income' | 'expense'>('expense');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const categories = useCategoryStore(state => state.categories);
 
   // Filter categories by selected type
-  const filteredCategories = DEFAULT_CATEGORIES.filter(
+  const filteredCategories = categories.filter(
     cat => cat.type === selectedType || cat.type === 'both'
   );
 
@@ -66,7 +68,7 @@ export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navi
       category: data.category,
       date: data.date,
       notes: data.notes || '',
-      iconName: getCategoryIcon(data.category),
+      iconName: categories.find(c => c.name === data.category)?.icon as any || 'ellipse-outline',
     });
 
     Alert.alert('Success', 'Transaction added successfully!', [
@@ -81,7 +83,7 @@ export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navi
     setValue('category', '');
   };
 
-  const handleCategorySelect = (category: Category) => {
+  const handleCategorySelect = (category: any) => {
     setSelectedCategory(category.name);
     setValue('category', category.name);
   };
@@ -236,7 +238,7 @@ export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navi
                     activeOpacity={0.7}
                   >
                     <Ionicons
-                      name={cat.iconName}
+                      name={(cat.icon as any) || 'pricetag-outline'}
                       size={18}
                       color={selectedCategory === cat.name ? '#FFF' : cat.color}
                     />

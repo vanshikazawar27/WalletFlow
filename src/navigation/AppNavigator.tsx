@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TabNavigator } from './TabNavigator';
 import { AddTransactionScreen } from '../screens/AddTransaction/AddTransactionScreen';
 import { EditTransactionScreen } from '../screens/EditTransaction/EditTransactionScreen';
+import { CategoriesScreen } from '../screens/Categories/CategoriesScreen';
+import { AddCategoryScreen } from '../screens/Categories/AddCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +24,8 @@ export const AppNavigator = () => {
           component={EditTransactionScreen}
           options={{ animation: 'slide_from_bottom' }}
         />
-      </Stack.Navigator>
+      <Stack.Screen name="AddCategory" component={AddCategoryScreen} options={{ animation: 'slide_from_bottom' }} />
+        </Stack.Navigator>
     </NavigationContainer>
   );
 };

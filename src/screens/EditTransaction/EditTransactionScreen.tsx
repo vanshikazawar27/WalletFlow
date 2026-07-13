@@ -17,8 +17,9 @@ import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
 import { useTransactionStore } from '../../store/transactionStore';
-import { DEFAULT_CATEGORIES, getCategoryIcon, Category } from '../../types/transaction';
+import { Category as TransactionCategory } from '../../types/transaction';
 import { TransactionFormData, transactionSchema } from '../../types/schemas';
+import { useCategoryStore } from '../../store/categoryStore';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 
@@ -38,8 +39,9 @@ export const EditTransactionScreen: React.FC<EditTransactionScreenProps> = ({ na
 
   const [selectedType, setSelectedType] = useState<'income' | 'expense'>('expense');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const categories = useCategoryStore(state => state.categories);
 
-  const filteredCategories = DEFAULT_CATEGORIES.filter(
+  const filteredCategories = categories.filter(
     cat => cat.type === selectedType || cat.type === 'both'
   );
 
@@ -81,7 +83,7 @@ export const EditTransactionScreen: React.FC<EditTransactionScreenProps> = ({ na
     updateTransaction(id, {
       ...data,
       amount: parseFloat(data.amount),
-      iconName: getCategoryIcon(data.category),
+      iconName: categories.find(c => c.name === data.category)?.icon as any || 'ellipse-outline',
     });
     Alert.alert('Success', 'Transaction updated successfully!', [
       { text: 'OK', onPress: () => navigation.goBack() },
@@ -95,7 +97,7 @@ export const EditTransactionScreen: React.FC<EditTransactionScreenProps> = ({ na
     setValue('category', '');
   };
 
-  const handleCategorySelect = (category: Category) => {
+  const handleCategorySelect = (category: any) => {
     setSelectedCategory(category.name);
     setValue('category', category.name);
   };
@@ -236,7 +238,7 @@ export const EditTransactionScreen: React.FC<EditTransactionScreenProps> = ({ na
                     activeOpacity={0.7}
                   >
                     <Ionicons
-                      name={cat.iconName}
+                      name={(cat.icon as any) || 'pricetag-outline'}
                       size={18}
                       color={selectedCategory === cat.name ? '#FFF' : cat.color}
                     />
