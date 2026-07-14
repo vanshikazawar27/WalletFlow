@@ -8,6 +8,7 @@ import { HomeScreen } from '../screens/Home/HomeScreen';
 import { TransactionsScreen } from '../screens/Transactions/TransactionsScreen';
 import { AnalyticsScreen } from '../screens/Analytics/AnalyticsScreen';
 import { SettingsScreen } from '../screens/Settings/SettingsScreen';
+import { BudgetScreen } from '../screens/Budget/BudgetScreen';
 
 const Tab = createBottomTabNavigator();
 
