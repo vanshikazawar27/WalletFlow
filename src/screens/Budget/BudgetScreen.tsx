@@ -5,6 +5,7 @@ import { Card } from '../../components/common/Card';
 import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
 import { useBudgetStore } from '../../store/budgetStore';
 import { useCategoryStore } from '../../store/categoryStore';
+import { BudgetAlertCard } from '../../components/alerts/BudgetAlertCard';
 import { useTransactionStore } from '../../store/transactionStore';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -22,6 +23,7 @@ type BudgetFormValues = z.infer<typeof budgetSchema>;
 export const BudgetScreen = () => {
   const { colors } = useTheme();
   const currentMonth = useMemo(() => new Date().toISOString().slice(0, 7), []);
+  const overallPercentage = useBudgetStore(state => state.percentageUsed(currentMonth));
   const budgetStore = useBudgetStore();
   const categoryStore = useCategoryStore();
   const transactionStore = useTransactionStore();

@@ -4,6 +4,8 @@ import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeProvider';
 import { BalanceCard } from '../../components/dashboard/BalanceCard';
 import { SummaryCard } from '../../components/dashboard/SummaryCard';
+import { useBudgetStore } from '../../store/budgetStore';
+import { BudgetAlertCard } from '../../components/alerts/BudgetAlertCard';
 import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
 import { TransactionItem } from '../../components/dashboard/TransactionItem';
 import { Transaction } from '../../types/transaction';
@@ -31,6 +33,9 @@ export const HomeScreen = () => {
     return 'Good Evening';
   }, []);
 
+  const currentMonth = new Date().toISOString().slice(0,7);
+  const overallPercentage = useBudgetStore(state => state.percentageUsed(currentMonth));
+
   // Format current date
   const currentDate = useMemo(() => {
     return new Intl.DateTimeFormat('en-US', {
@@ -56,6 +61,9 @@ export const HomeScreen = () => {
             <Ionicons name="person-circle-outline" size={32} color={colors.primary} />
           </View>
         </Animated.View>
+        {overallPercentage >= 80 && (
+          <BudgetAlertCard title="Monthly Budget" percentage={overallPercentage} />
+        )}
 
         {/* Balance Section */}
         <Animated.View entering={FadeInDown.duration(400).delay(200)}>
