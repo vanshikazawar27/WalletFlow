@@ -27,11 +27,18 @@ export const LineChart: React.FC<LineChartProps> = ({ data, labels, title }) => 
     useShadowColorFromDataset: false,
   };
 
+  // Only show a subset of labels if there are too many, to prevent overlap
+  const displayLabels = labels.map((label, index) => {
+    if (labels.length <= 7) return label;
+    const interval = Math.ceil(labels.length / 6);
+    return index % interval === 0 ? label : '';
+  });
+
   return (
     <View style={{ alignItems: 'center' }}>
-      {title && <Text style={{ color: colors.textPrimary, marginBottom: 8 }}>{title}</Text>}
+      {title && <Text style={{ color: colors.textPrimary, marginBottom: 8, fontWeight: 'bold' }}>{title}</Text>}
       <RNLineChart
-        data={{ labels, datasets: [{ data, color: chartConfig.color, strokeWidth: 2 }] }}
+        data={{ labels: displayLabels, datasets: [{ data, color: chartConfig.color, strokeWidth: 3 }] }}
         width={Dimensions.get('window').width - 40}
         height={220}
         chartConfig={chartConfig}

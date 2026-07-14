@@ -4,7 +4,9 @@ import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeProvider';
 import { LineChart } from '../../components/charts/LineChart';
 import { PieChart } from '../../components/charts/PieChart';
-import { BarChart } from '../../components/charts/BarChart';
+import { GradientBackground } from '../../components/ui/GradientBackground';
+import { ChartToggle } from '../../components/ui/ChartToggle';
+import { GlassCard } from '../../components/ui/GlassCard';
 import { useAnalytics } from '../../hooks/useAnalytics';
 
 export const AnalyticsScreen = () => {
@@ -17,28 +19,61 @@ export const AnalyticsScreen = () => {
     incomeVsExpense,
   } = useAnalytics();
 
+  const [activeChart, setActiveChart] = React.useState<'trend' | 'category'>('trend');
+
+  const netBalance = incomeVsExpense.income - incomeVsExpense.expense;
+
   return (
-    <ScreenWrapper style={styles.container}>
+    <GradientBackground>
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Mini cards */}
-        <View style={styles.cardsRow}>
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Largest Expense</Text>
-            <Text style={[styles.cardValue, { color: colors.expense }]}>{`$${largestExpense.amount.toFixed(2)}`}</Text>
-          </View>
-          <View style={[styles.card, { backgroundColor: colors.card }]}>
-            <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Avg Daily Spend</Text>
-            <Text style={[styles.cardValue, { color: colors.textPrimary }]}>{`$${averageDailySpending.toFixed(2)}`}</Text>
+        {/* Summary Header */}
+        <View style={styles.summaryContainer}>
+          <Text style={[styles.summaryTitle, { color: '#FFFFFF' }]}>Overview</Text>
+          <View style={styles.summaryRow}>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>Income</Text>
+              <Text style={[styles.summaryValue, { color: colors.income }]}>{`$${incomeVsExpense.income.toFixed(2)}`}</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>Expense</Text>
+              <Text style={[styles.summaryValue, { color: colors.expense }]}>{`$${incomeVsExpense.expense.toFixed(2)}`}</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <Text style={styles.summaryLabel}>Balance</Text>
+              <Text style={[styles.summaryValue, { color: netBalance >= 0 ? colors.income : colors.expense }]}>{`$${Math.abs(netBalance).toFixed(2)}`}</Text>
+            </View>
           </View>
         </View>
-        {/* Income vs Expense Bar Chart */}
-        <BarChart income={incomeVsExpense.income} expense={incomeVsExpense.expense} title="Income vs Expense" />
-        {/* Spending Trend Line Chart */}
-        <LineChart data={spendingTrend.data} labels={spendingTrend.labels} title="Spending Trend (Daily)" />
-        {/* Category Breakdown Pie Chart */}
-        <PieChart data={categoryBreakdown} title="Expenses by Category" />
+
+        {/* Chart Toggle */}
+        <ChartToggle activeChart={activeChart} onToggle={setActiveChart} />
+
+        {/* Active Chart */}
+        <View style={styles.chartContainer}>
+          {activeChart === 'trend' ? (
+            <LineChart data={spendingTrend.data} labels={spendingTrend.labels} title="Spending Trend (Daily)" />
+          ) : (
+            <PieChart data={categoryBreakdown} title="Expenses by Category" />
+          )}
+        </View>
+
+        {/* Mini cards (moved below chart) */}
+        <View style={styles.cardsRow}>
+          <GlassCard>
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Largest Expense</Text>
+              <Text style={[styles.cardValue, { color: colors.expense }]}>{`$${largestExpense.amount.toFixed(2)}`}</Text>
+            </View>
+          </GlassCard>
+          <GlassCard>
+            <View style={[styles.card, { backgroundColor: colors.card }]}>
+              <Text style={[styles.cardTitle, { color: colors.textPrimary }]}>Avg Daily Spend</Text>
+              <Text style={[styles.cardValue, { color: colors.textPrimary }]}>{`$${averageDailySpending.toFixed(2)}`}</Text>
+            </View>
+          </GlassCard>
+        </View>
       </ScrollView>
-    </ScreenWrapper>
+    </GradientBackground>
   );
 };
 
@@ -49,6 +84,41 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+    paddingBottom: 40,
+  },
+  summaryContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  summaryTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 10,
+  },
+  summaryItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  summaryLabel: {
+    color: '#E0E7FF', // light indigo tint
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 4,
+    textTransform: 'uppercase',
+  },
+  summaryValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  chartContainer: {
+    alignItems: 'center',
+    marginVertical: 16,
   },
   cardsRow: {
     flexDirection: 'row',
