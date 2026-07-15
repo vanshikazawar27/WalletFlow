@@ -1,6 +1,6 @@
 // Budget store using Zustand
 import { create } from 'zustand';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { upsertBudget, fetchAllBudgets } from '../database/budgetRepo';
 import { Budget } from '../types/budget';
 import { useTransactionStore } from './transactionStore';
 
@@ -28,8 +28,7 @@ export const useBudgetStore = create<BudgetState>((set, get) => ({
   loadBudgets: async () => {
     set({ isLoading: true, error: null });
     try {
-      const stored = await AsyncStorage.getItem('budgets');
-      const parsed: Budget[] = stored ? JSON.parse(stored) : [];
+      const parsed = fetchAllBudgets();
       set({ budgets: parsed, isLoading: false });
     } catch (e) {
       set({ error: (e as Error).message, isLoading: false });
@@ -40,27 +39,31 @@ export const useBudgetStore = create<BudgetState>((set, get) => ({
     // Ensure a unique id per month (and optional category)
     const id = budget.categoryId ? `${budget.month}-${budget.categoryId}` : budget.month;
     const newBudget: Budget = { ...budget, id };
+    upsertBudget(newBudget);
     set(state => {
       const filtered = state.budgets.filter(b => b.id !== id);
       return { budgets: [...filtered, newBudget] };
     });
-    await AsyncStorage.setItem('budgets', JSON.stringify(get().budgets));
   },
 
   setCategoryBudget: async (month, categoryId, amount) => {
     const id = `${month}-${categoryId}`;
-    const existing = get().budgets.find(b => b.id === id);
     const budget: Budget = { id, month, amount, categoryId };
+    upsertBudget(budget);
     set(state => {
       const filtered = state.budgets.filter(b => b.id !== id);
       return { budgets: [...filtered, budget] };
     });
-    await AsyncStorage.setItem('budgets', JSON.stringify(get().budgets));
   },
 
   deleteBudget: async (id) => {
+    // We didn't add deleteBudget in Repo, but we can just filter it in memory or we should add it?
+    // Wait, let's just delete it from DB if needed. 
+    // I will use db.runSync directly here for brevity or assume we don't delete budgets in this app flow.
+    // Let's actually import db and delete it.
+    const { db } = require('../database/db');
+    db.runSync(`DELETE FROM budgets WHERE id = ?`, [id]);
     set(state => ({ budgets: state.budgets.filter(b => b.id !== id) }));
-    await AsyncStorage.setItem('budgets', JSON.stringify(get().budgets));
   },
 
   getBudgetForMonth: (month) => {

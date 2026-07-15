@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { upsertUserProfile, fetchUserProfile } from '../database/userRepo';
 
 export interface UserProfile {
   name: string;
@@ -39,15 +39,23 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   loadUser: async () => {
     try {
-      const [profileData, prefsData] = await Promise.all([
-        AsyncStorage.getItem('user_profile'),
-        AsyncStorage.getItem('user_preferences'),
-      ]);
-      set({
-        profile: profileData ? JSON.parse(profileData) : DEFAULT_PROFILE,
-        preferences: prefsData ? JSON.parse(prefsData) : DEFAULT_PREFERENCES,
-        isLoaded: true,
-      });
+      const data = fetchUserProfile();
+      if (data) {
+        set({
+          profile: {
+            name: data.name,
+            email: data.email,
+            avatarUri: data.avatarUri,
+          },
+          preferences: {
+            biometricLogin: data.biometricLogin === 1,
+            pushNotifications: data.pushNotifications === 1,
+          },
+          isLoaded: true,
+        });
+      } else {
+        set({ isLoaded: true });
+      }
     } catch {
       set({ isLoaded: true });
     }
@@ -56,12 +64,32 @@ export const useUserStore = create<UserState>((set, get) => ({
   updateProfile: async (updates) => {
     const newProfile = { ...get().profile, ...updates };
     set({ profile: newProfile });
-    await AsyncStorage.setItem('user_profile', JSON.stringify(newProfile));
+    
+    // Save to DB
+    const { profile, preferences } = get();
+    upsertUserProfile({
+      id: 'default',
+      name: profile.name,
+      email: profile.email,
+      avatarUri: profile.avatarUri,
+      biometricLogin: preferences.biometricLogin ? 1 : 0,
+      pushNotifications: preferences.pushNotifications ? 1 : 0,
+    });
   },
 
   updatePreferences: async (updates) => {
     const newPrefs = { ...get().preferences, ...updates };
     set({ preferences: newPrefs });
-    await AsyncStorage.setItem('user_preferences', JSON.stringify(newPrefs));
+    
+    // Save to DB
+    const { profile, preferences } = get();
+    upsertUserProfile({
+      id: 'default',
+      name: profile.name,
+      email: profile.email,
+      avatarUri: profile.avatarUri,
+      biometricLogin: preferences.biometricLogin ? 1 : 0,
+      pushNotifications: preferences.pushNotifications ? 1 : 0,
+    });
   },
 }));
