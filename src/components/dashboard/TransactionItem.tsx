@@ -49,7 +49,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, o
               const deleteTransaction = useTransactionStore.getState().deleteTransaction;
               deleteTransaction(transaction.id);
             }} style={styles.deleteButton} activeOpacity={0.7}>
-              <Ionicons name="trash" size={20} color={colors.error || '#FF3B30'} />
+              <Ionicons name="trash" size={20} color={colors.expense || '#FF3B30'} />
             </TouchableOpacity>
           </View>
         </View>
@@ -103,5 +103,9 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
+  },
+  deleteButton: {
+    padding: 8,
+    marginTop: 4,
   },
 });

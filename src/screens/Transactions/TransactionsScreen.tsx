@@ -48,7 +48,7 @@ export const TransactionsScreen = () => {
     <Animated.View entering={FadeInDown.duration(300).delay(100 * index)}>
       <TransactionItem
         transaction={item}
-        onPress={(tx) => navigation.navigate('EditTransaction' as never, { id: tx.id } as never)}
+        onPress={(tx) => (navigation as any).navigate('EditTransaction', { id: tx.id })}
       />
     </Animated.View>
   );

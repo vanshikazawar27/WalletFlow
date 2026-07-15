@@ -96,7 +96,7 @@ export const HomeScreen = () => {
             <Animated.View key={tx.id} entering={FadeInDown.duration(400).delay(600 + (index * 100))}>
               <TransactionItem 
                 transaction={tx} 
-                onPress={(transaction) => navigation.navigate('EditTransaction' as never, { id: transaction.id } as never)} 
+                onPress={(transaction) => (navigation as any).navigate('EditTransaction', { id: transaction.id })} 
               />
             </Animated.View>
           ))}

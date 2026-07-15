@@ -44,6 +44,8 @@ export const BarChart: React.FC<BarChartProps> = ({ income, expense, title }) =>
         fromZero
         showValuesOnTopOfBars
         style={{ borderRadius: 16 }}
+        yAxisLabel=""
+        yAxisSuffix=""
       />
     </View>
   );

@@ -29,7 +29,7 @@ const ICONS = [
   'cart-outline',
   'home-outline',
   'fitness-outline',
-];
+] as (keyof typeof Ionicons.glyphMap)[];
 
 export const AddCategoryScreen = () => {
   const navigation = useNavigation<any>();
@@ -41,7 +41,7 @@ export const AddCategoryScreen = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    await addCategory({ name: data.name, icon: data.icon, color: data.color });
+    await addCategory({ name: data.name, icon: data.icon as any, color: data.color, type: 'expense' });
     navigation.goBack();
   };
 
@@ -55,7 +55,7 @@ export const AddCategoryScreen = () => {
           style={[styles.iconItem, value === item && styles.iconSelected]}
           onPress={() => onChange(item)}
         >
-          <Ionicons name={item} size={28} color={value === item ? '#0066ff' : '#555'} />
+          <Ionicons name={item as any} size={28} color={value === item ? '#0066ff' : '#555'} />
         </TouchableOpacity>
       )}
     />
