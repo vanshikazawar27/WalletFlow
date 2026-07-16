@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { z } from 'zod';
@@ -9,6 +9,7 @@ import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { Button } from '../../components/common/Button';
 import { useTheme } from '../../theme/ThemeProvider';
 import { useAuthStore } from '../../store/authStore';
+import { useBiometrics } from '../../hooks/useBiometrics';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -22,6 +23,8 @@ export const LoginScreen = () => {
   const navigation = useNavigation<any>();
   const [showPassword, setShowPassword] = useState(false);
   const login = useAuthStore((s) => s.login);
+  const biometricEnabled = useAuthStore((s) => s.biometricEnabled);
+  const { isAvailable, biometricType, authenticate } = useBiometrics();
 
   const { control, handleSubmit, formState: { errors } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -32,6 +35,15 @@ export const LoginScreen = () => {
     // For now, we persist the auth state locally.
     await login();
     // The navigator will automatically switch to AppStack
+  };
+
+  const handleBiometricLogin = async () => {
+    const success = await authenticate();
+    if (success) {
+      await login();
+    } else {
+      Alert.alert('Authentication Failed', 'Biometric authentication was not successful. Please try again or use your password.');
+    }
   };
 
   return (
@@ -118,6 +130,24 @@ export const LoginScreen = () => {
               textStyle={{ color: colors.textPrimary }}
             />
           </View>
+
+          {/* Biometric Login */}
+          {isAvailable && biometricEnabled && (
+            <TouchableOpacity
+              style={[styles.biometricButton, { borderColor: colors.border, backgroundColor: colors.card }]}
+              onPress={handleBiometricLogin}
+              activeOpacity={0.8}
+            >
+              <Ionicons
+                name={biometricType === 'face' ? 'scan-outline' : 'finger-print-outline'}
+                size={28}
+                color={colors.primary}
+              />
+              <Text style={[styles.biometricText, { color: colors.textSecondary }]}>
+                {biometricType === 'face' ? 'Login with Face ID' : 'Login with Fingerprint'}
+              </Text>
+            </TouchableOpacity>
+          )}
 
           {/* Footer */}
           <View style={styles.footer}>
@@ -214,6 +244,20 @@ const styles = StyleSheet.create({
   },
   googleButton: {
     borderColor: '#E5E7EB',
+  },
+  biometricButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 56,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginBottom: 24,
+    gap: 12,
+  },
+  biometricText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
   footer: {
     flexDirection: 'row',

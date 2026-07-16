@@ -14,11 +14,13 @@ import { SettingsSection } from '../../components/settings/SettingsSection';
 import { SettingsRow } from '../../components/settings/SettingsRow';
 import { useTheme } from '../../theme/ThemeProvider';
 import { useUserStore } from '../../store/userStore';
+import { useAuthStore } from '../../store/authStore';
 
 export const SettingsScreen = () => {
   const { colors, theme, toggleTheme } = useTheme();
   const navigation = useNavigation<any>();
   const { profile, preferences, updatePreferences, loadUser, isLoaded } = useUserStore();
+  const { biometricEnabled, setBiometricEnabled, logout } = useAuthStore();
 
   useEffect(() => {
     if (!isLoaded) {
@@ -27,10 +29,12 @@ export const SettingsScreen = () => {
   }, [isLoaded, loadUser]);
 
   const handleBiometricToggle = useCallback(
-    (value: boolean) => {
+    async (value: boolean) => {
+      await setBiometricEnabled(value);
+      // We also update userPreferences so it syncs up, though authStore handles the real lock
       updatePreferences({ biometricLogin: value });
     },
-    [updatePreferences],
+    [setBiometricEnabled, updatePreferences],
   );
 
   const handleNotificationsToggle = useCallback(
@@ -128,6 +132,15 @@ export const SettingsScreen = () => {
               title="Manage Categories"
               subtitle="Add, edit or remove"
               onPress={() => navigation.navigate('AddCategory')}
+            />
+            <SettingsRow
+              icon="log-out-outline"
+              iconColor="#EF4444"
+              title="Log Out"
+              subtitle="Sign out of your account"
+              onPress={async () => {
+                await logout();
+              }}
               isLast
             />
           </SettingsSection>
@@ -151,7 +164,7 @@ export const SettingsScreen = () => {
               title="Biometric Login"
               subtitle="Unlock with fingerprint or face"
               isToggle
-              toggleValue={preferences.biometricLogin}
+              toggleValue={biometricEnabled}
               onToggle={handleBiometricToggle}
             />
             <SettingsRow
