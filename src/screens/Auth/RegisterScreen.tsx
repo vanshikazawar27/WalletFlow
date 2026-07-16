@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { Button } from '../../components/common/Button';
 import { useTheme } from '../../theme/ThemeProvider';
+import { useAuthStore } from '../../store/authStore';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -26,14 +27,14 @@ export const RegisterScreen = () => {
   const navigation = useNavigation<any>();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const login = useAuthStore((s) => s.login);
 
   const { control, handleSubmit, formState: { errors } } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterForm) => {
-    console.log('Register Data:', data);
-    navigation.replace('Main');
+  const onSubmit = async (_data: RegisterForm) => {
+    await login(); // auto-login after registration
   };
 
   return (

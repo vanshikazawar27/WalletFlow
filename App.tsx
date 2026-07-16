@@ -8,6 +8,7 @@ import { useCategoryStore } from './src/store/categoryStore';
 import { useTransactionStore } from './src/store/transactionStore';
 import { useBudgetStore } from './src/store/budgetStore';
 import { useUserStore } from './src/store/userStore';
+import { useAuthStore } from './src/store/authStore';
 import { runMigrations } from './src/database/db';
 
 export default function App() {
@@ -19,8 +20,9 @@ export default function App() {
         // Run SQLite migrations to ensure tables exist
         runMigrations();
 
-        // Load data into Zustand stores from SQLite
+        // Load auth state and data stores in parallel
         await Promise.all([
+          useAuthStore.getState().loadAuthState(),
           useCategoryStore.getState().loadCategories(),
           useTransactionStore.getState().loadTransactions(),
           useBudgetStore.getState().loadBudgets(),

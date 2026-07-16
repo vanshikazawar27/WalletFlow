@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { Button } from '../../components/common/Button';
 import { useTheme } from '../../theme/ThemeProvider';
+import { useAuthStore } from '../../store/authStore';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,17 +35,23 @@ export const OnboardingScreen = () => {
   const navigation = useNavigation<any>();
   const flatListRef = useRef<FlatList>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const completeOnboarding = useAuthStore((s) => s.completeOnboarding);
+
+  const goToLogin = async () => {
+    await completeOnboarding();
+    navigation.replace('Login');
+  };
 
   const handleNext = () => {
     if (currentIndex < SLIDES.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1, animated: true });
     } else {
-      navigation.replace('Login');
+      goToLogin();
     }
   };
 
   const handleSkip = () => {
-    navigation.replace('Login');
+    goToLogin();
   };
 
   const renderItem = ({ item }: { item: typeof SLIDES[0] }) => {

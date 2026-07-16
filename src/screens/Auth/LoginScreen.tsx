@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { Button } from '../../components/common/Button';
 import { useTheme } from '../../theme/ThemeProvider';
+import { useAuthStore } from '../../store/authStore';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -20,15 +21,17 @@ export const LoginScreen = () => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
   const [showPassword, setShowPassword] = useState(false);
+  const login = useAuthStore((s) => s.login);
 
   const { control, handleSubmit, formState: { errors } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginForm) => {
-    // Phase 9.3: Auth logic will go here
-    console.log('Login Data:', data);
-    navigation.replace('Main');
+  const onSubmit = async (_data: LoginForm) => {
+    // In a real app, validate credentials against a backend here.
+    // For now, we persist the auth state locally.
+    await login();
+    // The navigator will automatically switch to AppStack
   };
 
   return (
