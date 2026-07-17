@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeProvider';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import { HomeScreen } from '../screens/Home/HomeScreen';
 import { TransactionsScreen } from '../screens/Transactions/TransactionsScreen';
@@ -29,6 +30,17 @@ const CustomTabBarButton = ({ children, onPress }: any) => {
 
 export const TabNavigator = () => {
   const { colors } = useTheme();
+  const rotation = useSharedValue(0);
+
+  useEffect(() => {
+    rotation.value = withTiming(360, { duration: 2000 }, () => {
+      rotation.value = 0;
+    });
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
 
   return (
     <Tab.Navigator
@@ -82,25 +94,27 @@ export const TabNavigator = () => {
         }}
       />
       
-      {/* Floating Action Button (Center) */}
-      <Tab.Screen
-        name="AddPlaceholder"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: () => (
-            <Ionicons name="add" size={32} color="#FFFFFF" />
-          ),
-          tabBarButton: (props) => (
-            <CustomTabBarButton {...props} />
-          ),
-        }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.navigate('AddTransaction');
-          },
-        })}
-      />
+            {/* Floating Action Button (Center) */}
+        <Tab.Screen
+          name="AddPlaceholder"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: () => (
+              <Animated.View style={animatedStyle}>
+                <Ionicons name="add" size={32} color="#FFFFFF" />
+              </Animated.View>
+            ),
+            tabBarButton: (props) => (
+              <CustomTabBarButton {...props} />
+            ),
+          }}
+          listeners={({ navigation }) => ({
+            tabPress: (e) => {
+              e.preventDefault();
+              navigation.navigate('AddTransaction');
+            },
+          })}
+        />
 
       <Tab.Screen
         name="AnalyticsTab"

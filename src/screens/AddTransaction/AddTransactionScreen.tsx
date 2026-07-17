@@ -25,6 +25,7 @@ import {
 import { TransactionFormData, transactionSchema } from '../../types/schemas';
 import { useCategoryStore } from '../../store/categoryStore';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useSnackbar } from '../../components/common/Snackbar';
 
 interface AddTransactionScreenProps {
   navigation: any;
@@ -34,6 +35,7 @@ interface AddTransactionScreenProps {
 export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation, route }) => {
   const { colors } = useTheme();
   const addTransaction = useTransactionStore(state => state.addTransaction);
+  const { showSnackbar } = useSnackbar();
   const [selectedType, setSelectedType] = useState<'income' | 'expense'>('expense');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const categories = useCategoryStore(state => state.categories);
@@ -71,9 +73,11 @@ export const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navi
       iconName: categories.find(c => c.name === data.category)?.icon as any || 'ellipse-outline',
     });
 
-    Alert.alert('Success', 'Transaction added successfully!', [
-      { text: 'OK', onPress: () => navigation.goBack() },
-    ]);
+    showSnackbar({
+      message: `${data.type === 'income' ? 'Income' : 'Expense'} of $${data.amount} added!`,
+      type: 'success',
+    });
+    navigation.goBack();
   };
 
   const handleTypeToggle = (type: 'income' | 'expense') => {

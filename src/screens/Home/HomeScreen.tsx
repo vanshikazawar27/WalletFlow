@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { ScreenWrapper } from '../../components/common/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeProvider';
@@ -10,7 +10,7 @@ import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
 import { TransactionItem } from '../../components/dashboard/TransactionItem';
 import { Transaction } from '../../types/transaction';
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
+import { PressableScale } from '../../components/common/PressableScale';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,9 +21,16 @@ const DUMMY_TRANSACTIONS: Transaction[] = [
   { id: '4', title: 'Uber Ride', amount: 24.30, date: 'Mar 12', category: 'Transport', type: 'expense', iconName: 'car-outline', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
 ];
 
+import { useTransactionStore } from '../../store/transactionStore';
+import { DashboardSkeleton } from '../../components/common/SkeletonLoader';
 export const HomeScreen = () => {
   const { colors } = useTheme();
   const navigation = useNavigation();
+  const { isLoading, loadTransactions } = useTransactionStore();
+  useEffect(() => {
+    loadTransactions();
+  }, []);
+
 
   // Dynamic greeting based on time of day
   const greeting = useMemo(() => {
@@ -47,64 +54,68 @@ export const HomeScreen = () => {
 
   return (
     <ScreenWrapper>
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header Section */}
-        <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.header}>
-          <View>
-            <Text style={[styles.greeting, { color: colors.textSecondary }]}>{greeting},</Text>
-            <Text style={[styles.date, { color: colors.textPrimary }]}>{currentDate}</Text>
+      {isLoading ? (
+        <DashboardSkeleton />
+      ) : (
+        <ScrollView 
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header Section */}
+          <Animated.View entering={FadeInDown.duration(400).delay(100)} style={styles.header}>
+            <View>
+              <Text style={[styles.greeting, { color: colors.textSecondary }]}>{greeting},</Text>
+              <Text style={[styles.date, { color: colors.textPrimary }]}>{currentDate}</Text>
+            </View>
+            <View style={[styles.profileAvatar, { backgroundColor: colors.card }]}>
+              <Ionicons name="person-circle-outline" size={32} color={colors.primary} />
+            </View>
+          </Animated.View>
+          {overallPercentage >= 80 && (
+            <BudgetAlertCard title="Monthly Budget" percentage={overallPercentage} />
+          )}
+
+          {/* Balance Section */}
+          <Animated.View entering={FadeInDown.duration(400).delay(200)}>
+            <BalanceCard balance={12450.75} />
+          </Animated.View>
+
+          {/* Summary Row */}
+          <Animated.View entering={FadeInDown.duration(400).delay(300)} style={styles.summaryRow}>
+            <SummaryCard type="income" amount={4500.00} />
+            <View style={styles.spacer} />
+            <SummaryCard type="expense" amount={1250.25} />
+          </Animated.View>
+
+          {/* Budget Section */}
+          <Animated.View entering={FadeInDown.duration(400).delay(400)}>
+            <BudgetProgress totalBudget={3000} spentAmount={1250.25} />
+          </Animated.View>
+          
+          {/* Recent Transactions Header */}
+          <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Recent Transactions</Text>
+            <PressableScale onPress={() => (navigation as any).navigate('AllTransactions') } style={styles.seeAllText}> 
+              <Text style={[styles.seeAllText, { color: colors.primary }]}>See All</Text>
+            </PressableScale>
+          </Animated.View>
+
+          {/* Transactions List */}
+          <View style={styles.transactionsList}>
+            {DUMMY_TRANSACTIONS.map((tx, index) => (
+              <Animated.View key={tx.id} entering={FadeInDown.duration(400).delay(600 + (index * 100))}>
+                <TransactionItem 
+                  transaction={tx} 
+                  onPress={(transaction) => (navigation as any).navigate('EditTransaction', { id: transaction.id })} 
+                />
+              </Animated.View>
+            ))}
           </View>
-          <View style={[styles.profileAvatar, { backgroundColor: colors.card }]}>
-            <Ionicons name="person-circle-outline" size={32} color={colors.primary} />
-          </View>
-        </Animated.View>
-        {overallPercentage >= 80 && (
-          <BudgetAlertCard title="Monthly Budget" percentage={overallPercentage} />
-        )}
-
-        {/* Balance Section */}
-        <Animated.View entering={FadeInDown.duration(400).delay(200)}>
-          <BalanceCard balance={12450.75} />
-        </Animated.View>
-
-        {/* Summary Row */}
-        <Animated.View entering={FadeInDown.duration(400).delay(300)} style={styles.summaryRow}>
-          <SummaryCard type="income" amount={4500.00} />
-          <View style={styles.spacer} />
-          <SummaryCard type="expense" amount={1250.25} />
-        </Animated.View>
-
-        {/* Budget Section */}
-        <Animated.View entering={FadeInDown.duration(400).delay(400)}>
-          <BudgetProgress totalBudget={3000} spentAmount={1250.25} />
-        </Animated.View>
-        
-        {/* Recent Transactions Header */}
-        <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Recent Transactions</Text>
-          <TouchableOpacity activeOpacity={0.7}>
-            <Text style={[styles.seeAllText, { color: colors.primary }]}>See All</Text>
-          </TouchableOpacity>
-        </Animated.View>
-
-        {/* Transactions List */}
-        <View style={styles.transactionsList}>
-          {DUMMY_TRANSACTIONS.map((tx, index) => (
-            <Animated.View key={tx.id} entering={FadeInDown.duration(400).delay(600 + (index * 100))}>
-              <TransactionItem 
-                transaction={tx} 
-                onPress={(transaction) => (navigation as any).navigate('EditTransaction', { id: transaction.id })} 
-              />
-            </Animated.View>
-          ))}
-        </View>
-        
-        {/* Temporary Spacer for Bottom Nav */}
-        <View style={{ height: 100 }} />
-      </ScrollView>
+          
+          {/* Temporary Spacer for Bottom Nav */}
+          <View style={{ height: 100 }} />
+        </ScrollView>
+      )}
     </ScreenWrapper>
   );
 };

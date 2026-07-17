@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/common/ScreenWrapper';
+import { EmptyState } from '../../components/common/EmptyState';
 import { useTheme } from '../../theme/ThemeProvider';
 import { useTransactionStore } from '../../store/transactionStore';
 import { TransactionItem } from '../../components/dashboard/TransactionItem';
@@ -104,10 +105,13 @@ export const TransactionsScreen = () => {
 
       {/* List or Empty State */}
       {filteredSorted.length === 0 ? (
-        <View style={styles.emptyContainer}>
-           <Image source={require('../../assets/images/empty_transactions_1783691147288.png')} style={styles.emptyImage} />
-          <Text style={[styles.emptyText, { color: colors.textSecondary }]}>No transactions found</Text>
-        </View>
+        <EmptyState
+          icon="receipt-outline"
+          title="No Transactions Yet"
+          description="Start tracking your finances by adding your first transaction."
+          actionLabel="Add Transaction"
+          onAction={() => (navigation as any).navigate('AddTransaction')}
+        />
       ) : (
         <FlatList
           data={filteredSorted}

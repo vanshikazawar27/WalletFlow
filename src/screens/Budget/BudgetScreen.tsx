@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { useTheme } from '../../theme/ThemeProvider';
 import { Card } from '../../components/common/Card';
+import { EmptyState } from '../../components/common/EmptyState';
 import { BudgetProgress } from '../../components/dashboard/BudgetProgress';
 import { useBudgetStore } from '../../store/budgetStore';
 import { useCategoryStore } from '../../store/categoryStore';
@@ -122,12 +123,13 @@ export const BudgetScreen = () => {
         renderItem={renderCategoryItem}
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={() => (
-          <View style={styles.emptyState}>
-            <Text style={{ color: colors.textSecondary }}>No category budgets set for this month.</Text>
-            <TouchableOpacity style={styles.addButton} onPress={() => openEditModal()}>
-              <Text style={{ color: '#fff' }}>Add Overall Budget</Text>
-            </TouchableOpacity>
-          </View>
+          <EmptyState
+            icon="calculator-outline"
+            title="No Category Budgets"
+            description="Set budgets for specific categories to track spending more precisely."
+            actionLabel="Set Overall Budget"
+            onAction={() => openEditModal()}
+          />
         )}
       />
 
